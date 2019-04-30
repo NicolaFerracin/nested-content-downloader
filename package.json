@@ -1,0 +1,13 @@
+{
+  "name": "downloader",
+  "version": "1.0.0",
+  "description": "Given a list of URLs get their content and recursively download images (or other data) from each page.",
+  "main": "index.js",
+  "author": "Nicola Ferracin",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "0.18.0",
+    "jsdom": "15.0.0",
+    "pdfmake": "0.1.54"
+  }
+}
