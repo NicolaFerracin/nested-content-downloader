@@ -13,7 +13,7 @@ let globalConfig = {
       bolditalics: 'fonts/Roboto-MediumItalic.ttf'
     }
   }, // fonts for pdfmake
-  getTitle: url => url // default title
+  getTitle: url => url.replace(/\//g, '_').replace(/[:/.]/g, '') // default title
 };
 
 const checkRequiredConfig = config => {
@@ -36,7 +36,9 @@ const getUrlContent = url => {
 
   return axios.get(url).then(async res => {
     const { document } = new JSDOM(res.data).window;
-    const images = globalConfig.getImagesHref(document);
+    const images = globalConfig
+      .getImagesHref(document)
+      .map(href => (!href.startsWith('http') ? url + href : href));
 
     await downloadImagesToPdf(images, pdfConfig);
   });
@@ -80,7 +82,7 @@ const downloader = async config => {
   const promises = globalConfig.urls.map(getUrlContent);
   await Promise.all(promises);
   console.log(
-    `Images for all ${globalConfig.length} urls have been downloaded. You can find them in './${
+    `Images for all ${globalConfig.length} urls have been downloaded. You can find them in '${
       globalConfig.dir
     }'`
   );
