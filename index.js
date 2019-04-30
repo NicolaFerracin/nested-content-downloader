@@ -1,38 +1,42 @@
-const urls = require('./urls.json');
 const axios = require('axios');
 const { JSDOM } = require('jsdom');
 const PdfPrinter = require('pdfmake');
 const fs = require('fs');
-const utils = require('./utils');
 
-const dir = 'documents'; // destination directory
-
-const getUrlContent = url => {
-  console.log(`Getting HTML from ${url}.`);
-
-  const imageSrcLocator = 'a.js_pp_image.js_lightbox_image_src'; // images locator
-  const fonts = {
+let globalConfig = {
+  dir: './docs', // destination directory
+  fonts: {
     Roboto: {
       normal: 'fonts/Roboto-Regular.ttf',
       bold: 'fonts/Roboto-Medium.ttf',
       italics: 'fonts/Roboto-Italic.ttf',
       bolditalics: 'fonts/Roboto-MediumItalic.ttf'
     }
-  }; // fonts for pdfmake
+  }, // fonts for pdfmake
+  getTitle: url => url // default title
+};
 
-  const urlParts = url.split('/');
-  const title = utils.formatTitle(urlParts);
+const checkRequiredConfig = config => {
+  if (!config.getImagesHref) {
+    throw new Error('Missing getImagesHref function.');
+  }
+};
+
+const getUrlContent = url => {
+  console.log(`Getting HTML from ${url}.`);
+
+  const title = globalConfig.getTitle(url);
 
   const pdfConfig = {
     title,
-    fonts,
+    fonts: globalConfig.fonts,
     url,
-    path: `./${dir}/${title}.pdf`
+    path: `${globalConfig.dir}/${title}.pdf`
   };
 
   return axios.get(url).then(async res => {
     const { document } = new JSDOM(res.data).window;
-    const images = Array.from(document.querySelectorAll(imageSrcLocator)).map(el => el.dataset.src);
+    const images = globalConfig.getImagesHref(document);
 
     await downloadImagesToPdf(images, pdfConfig);
   });
@@ -57,28 +61,29 @@ const downloadImagesToPdf = async (images, pdfConfig) => {
   });
 };
 
-const createPdf = config => {
-  const printer = new PdfPrinter(config.fonts);
-  const pdfDoc = printer.createPdfKitDocument(config.docDefinition);
-  pdfDoc.pipe(fs.createWriteStream(config.path));
+const createPdf = pdfConfig => {
+  const printer = new PdfPrinter(pdfConfig.fonts);
+  const pdfDoc = printer.createPdfKitDocument(pdfConfig.docDefinition);
+  pdfDoc.pipe(fs.createWriteStream(pdfConfig.path));
   pdfDoc.end();
-  console.log(`Content for ${config.title} ready in '${config.path}'!`);
+  console.log(`Content for ${pdfConfig.title} ready in '${pdfConfig.path}'!`);
 };
 
-const download = () => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir);
+const downloader = async config => {
+  checkRequiredConfig(config);
+  globalConfig = { ...globalConfig, ...config };
+
+  if (!fs.existsSync(globalConfig.dir)) {
+    fs.mkdirSync(globalConfig.dir);
   }
 
-  const promises = urls.map(getUrlContent);
-  return Promise.all(promises);
-};
-
-const run = async () => {
-  await download();
+  const promises = globalConfig.urls.map(getUrlContent);
+  await Promise.all(promises);
   console.log(
-    `Images for all ${urls.length} urls have been downloaded. You can find them in './${dir}'`
+    `Images for all ${globalConfig.length} urls have been downloaded. You can find them in './${
+      globalConfig.dir
+    }'`
   );
 };
 
-run();
+module.exports = downloader;
