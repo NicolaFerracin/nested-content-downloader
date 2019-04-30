@@ -1,7 +1,7 @@
 {
-  "name": "downloader",
+  "name": "multiple-urls-images-downloader",
   "version": "1.0.0",
-  "description": "Given a list of URLs get their content and recursively download images (or other data) from each page.",
+  "description": "Given a list of URLs get their content and download images (or other data) from each page.",
   "main": "index.js",
   "author": "Nicola Ferracin",
   "license": "ISC",
