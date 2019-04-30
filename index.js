@@ -4,7 +4,7 @@ const PdfPrinter = require('pdfmake');
 const fs = require('fs');
 
 let globalConfig = {
-  dir: './docs', // destination directory
+  dir: './documents', // destination directory
   fonts: {
     Roboto: {
       normal: 'fonts/Roboto-Regular.ttf',
@@ -17,6 +17,9 @@ let globalConfig = {
 };
 
 const checkRequiredConfig = config => {
+  if (!config.urls) {
+    throw new Error('Missing url list.');
+  }
   if (!config.getImagesHref) {
     throw new Error('Missing getImagesHref function.');
   }
