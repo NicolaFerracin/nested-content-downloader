@@ -6,6 +6,7 @@
   "author": "Nicola Ferracin",
   "license": "ISC",
   "dependencies": {
+    "after-load": "1.0.4",
     "axios": "0.18.0",
     "jsdom": "15.0.0",
     "pdfmake": "0.1.54"

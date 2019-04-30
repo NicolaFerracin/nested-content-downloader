@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { JSDOM } = require('jsdom');
+const afterLoad = require('after-load');
 const PdfPrinter = require('pdfmake');
 const fs = require('fs');
 
@@ -34,13 +34,14 @@ const getUrlContent = url => {
     path: `${globalConfig.dir}/${title}.pdf`
   };
 
-  return axios.get(url).then(async res => {
-    const { document } = new JSDOM(res.data).window;
-    const images = globalConfig
-      .getImagesHref(document)
-      .map(href => (!href.startsWith('http') ? url + href : href));
-
-    await downloadImagesToPdf(images, pdfConfig);
+  return new Promise(resolve => {
+    afterLoad(url, async (html, $) => {
+      const images = globalConfig
+        .getImagesHref(html, $)
+        .map(href => (!href.startsWith('http') ? url + href : href));
+      await downloadImagesToPdf(images, pdfConfig);
+      resolve();
+    });
   });
 };
 
@@ -82,7 +83,7 @@ const downloader = async config => {
   const promises = globalConfig.urls.map(getUrlContent);
   await Promise.all(promises);
   console.log(
-    `Images for all ${globalConfig.length} urls have been downloaded. You can find them in '${
+    `Images for all ${globalConfig.urls.length} urls have been downloaded. You can find them in '${
       globalConfig.dir
     }'`
   );
