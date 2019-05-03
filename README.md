@@ -21,13 +21,13 @@ Can be used to collect any type of content from a given list of URLs.
 ## Install
 
 ```
-npm -S i nested-content-downloader
+npm -S i multiple-urls-images-downloader
 ```
 
 ## How to use
 
 ```js
-const ncd = require('nested-content-downloader');
+const muid = require('multiple-urls-images-downloader');
 
 const config = {
   // mandatory
@@ -51,7 +51,7 @@ const config = {
 
   /**
    * Mandatory
-   * Locator function. ncd will pass the html string and the $ cheerio object
+   * Locator function. muid will pass the html string and the $ cheerio object
    * ($ is provided by after-load)
    */
   getImagesHref: (html, $) => {
@@ -63,5 +63,5 @@ const config = {
   }
 };
 
-ncd(config);
+muid(config);
 ```
