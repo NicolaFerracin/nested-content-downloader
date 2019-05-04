@@ -39,14 +39,14 @@ const config = {
   // defaults to the url without /:.
   getTitle: url => url,
 
-  // defaults to Roboto fonts. Used for the text content
+  // Mandatory list of fonts. By default muid will look for the following:
   fonts: {
     Roboto: {
-      normal: 'fonts/Roboto-Regular.ttf',
-      bold: 'fonts/Roboto-Medium.ttf',
-      italics: 'fonts/Roboto-Italic.ttf',
-      bolditalics: 'fonts/Roboto-MediumItalic.ttf'
-    }
+      normal: './fonts/Roboto-Regular.ttf',
+      bold: './fonts/Roboto-Medium.ttf',
+      italics: './fonts/Roboto-Italic.ttf',
+      bolditalics: './fonts/Roboto-MediumItalic.ttf',
+    },
   },
 
   /**
@@ -60,7 +60,7 @@ const config = {
       images.push($(this).attr('src'));
     });
     return images;
-  }
+  },
 };
 
 muid(config);
