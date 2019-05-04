@@ -1,6 +1,6 @@
 {
   "name": "multiple-urls-images-downloader",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Given a list of URLs get their content and download images (or other data) from each page.",
   "files": [
     "fonts/Roboto-Regular.ttf",
