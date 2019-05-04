@@ -7,10 +7,10 @@ let globalConfig = {
   dir: './documents', // destination directory
   fonts: {
     Roboto: {
-      normal: 'fonts/Roboto-Regular.ttf',
-      bold: 'fonts/Roboto-Medium.ttf',
-      italics: 'fonts/Roboto-Italic.ttf',
-      bolditalics: 'fonts/Roboto-MediumItalic.ttf'
+      normal: './fonts/Roboto-Regular.ttf',
+      bold: './fonts/Roboto-Medium.ttf',
+      italics: './fonts/Roboto-Italic.ttf',
+      bolditalics: './fonts/Roboto-MediumItalic.ttf'
     }
   }, // fonts for pdfmake
   getTitle: url => url.replace(/\//g, '_').replace(/[:/.]/g, '') // default title
