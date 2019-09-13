@@ -41,6 +41,7 @@ const getUrlContent = url => {
     afterLoad(url, async (html, $) => {
       const images = globalConfig
         .getImagesHref(html, $)
+        .filter(img => img)
         .map(href => (!href.startsWith('http') ? url + href : href));
       await downloadImagesToPdf(images, pdfConfig);
       resolve();
