@@ -1,22 +1,24 @@
 # Downloader
 
-Given a list of URLs, this Node.js script will:
+Badly named [npm pagkage](https://www.npmjs.com/package/multiple-urls-images-downloader).
 
-- asynchronously get content for each URL
-- extract image URLs using the given locator function
+Given a list of URLs, this module will collect all the images on each URL and store them in separate PDF files.
+
+Single steps are:
+
+- asynchronously get HTML content for each URL
+- extract image URLs using the given locator function (using [`after-load`](https://www.npmjs.com/package/after-load))
 - asynchronously collect all images and merge them to a PDF
 
 ## Use case
 
-I wanted to collect images of houses from real estate websites, as inspiration.
-
-Can be used to collect any type of content from a given list of URLs.
+I wanted to collect images of houses from several real estate websites, as inspiration.
 
 ## Libraries used
 
-- axios: HTTP requests
-- after-load: full html loading
-- pdfmake: PDF creation
+- [`axios`](https://www.npmjs.com/package/axios): HTTP requests
+- [`after-load`](https://www.npmjs.com/package/after-load): full html loading
+- [`pdfmake`](https://www.npmjs.com/package/pdfmake): PDF creation
 
 ## Install
 
@@ -26,20 +28,24 @@ npm -S i multiple-urls-images-downloader
 
 ## How to use
 
+**NOTE**: You will need to provide fonts for the PDF generation.
+
 ```js
 const muid = require('multiple-urls-images-downloader');
 
 const config = {
-  // mandatory
+  // Mandatory list of URLs to inspect
   urls: ['url1', 'url2'],
 
-  // destination dir. Defaults to './documents'
+  // Destination dir where to store the PDF files
+  // Defaults to './documents'
   dir: './my_dir',
 
-  // defaults to the url without /:.
+  // Defaults to the url without "/" or ":" or "."
   getTitle: url => url,
 
-  // Mandatory list of fonts. By default muid will look for the following:
+  // Mandatory
+  // List of fonts. By default muid will look for the following:
   fonts: {
     Roboto: {
       normal: './fonts/Roboto-Regular.ttf',
@@ -49,11 +55,9 @@ const config = {
     },
   },
 
-  /**
-   * Mandatory
-   * Locator function. muid will pass the html string and the $ cheerio object
-   * ($ is provided by after-load)
-   */
+  // Mandatory
+  // Locator function. muid will pass the html string and the $ cheerio object
+  // ($ is provided by after-load)
   getImagesHref: (html, $) => {
     const images = [];
     $('img[src^="img/photos"]').each(function() {
