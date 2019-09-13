@@ -1,7 +1,7 @@
 {
   "name": "multiple-urls-images-downloader",
   "version": "1.0.2",
-  "description": "Given a list of URLs get their content and download images (or other data) from each page.",
+  "description": "Given a list of URLs, this module will collect all the images on each URL and store them in separate PDF files.",
   "main": "index.js",
   "author": "Nicola Ferracin",
   "license": "ISC",
