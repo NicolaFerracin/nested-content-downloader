@@ -28,7 +28,7 @@ npm -S i multiple-urls-images-downloader
 
 ## How to use
 
-**NOTE**: You will need to provide fonts for the PDF generation.
+**NOTE**: You always need to provide the [Roboto fonts](https://fonts.google.com/specimen/Roboto) for the PDF generation (required by [`pdfmake`](https://www.npmjs.com/package/pdfmake)). You can also provide additional custom fonts if you prefer.
 
 ```js
 const muid = require('multiple-urls-images-downloader');
@@ -44,14 +44,21 @@ const config = {
   // Defaults to the url without "/" or ":" or "."
   getTitle: url => url,
 
-  // Mandatory
-  // List of fonts. By default muid will look for the following:
+  // List of fonts
   fonts: {
+    // Mandatory
     Roboto: {
       normal: './fonts/Roboto-Regular.ttf',
       bold: './fonts/Roboto-Medium.ttf',
       italics: './fonts/Roboto-Italic.ttf',
       bolditalics: './fonts/Roboto-MediumItalic.ttf',
+    },
+    // Optional
+    customFont: {
+      normal: 'path_to_font.tff',
+      bold: 'path_to_font.tff',
+      italics: 'path_to_font.tff',
+      bolditalics: 'path_to_font.tff',
     },
   },
 
