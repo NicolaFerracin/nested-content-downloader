@@ -1,6 +1,6 @@
 # Downloader
 
-Badly named [npm pagkage](https://www.npmjs.com/package/multiple-urls-images-downloader).
+Badly named [npm package](https://www.npmjs.com/package/multiple-urls-images-downloader).
 
 Given a list of URLs, this module will collect all the images on each URL and store them in separate PDF files.
 
